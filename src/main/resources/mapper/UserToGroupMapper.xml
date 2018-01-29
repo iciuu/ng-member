@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ng.member.mapper.UserToGroupMapper">
+  <resultMap id="BaseResultMap" type="com.ng.member.entity.UserToGroup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="group_id" jdbcType="BIGINT" property="groupId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="group_role" jdbcType="CHAR" property="groupRole" />
+    <result column="delete_flag" jdbcType="CHAR" property="deleteFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <update id="delUserToGroup">
+    UPDATE user_to_group SET delete_flag = 'Y',update_time = NOW() WHERE group_id = #{groupId}
+  </update>
+
+  <update id="delUserToGroupUser">
+    UPDATE user_to_group SET delete_flag = 'Y',update_time = NOW() WHERE group_id = #{groupId} and user_id = #{userId}
+  </update>
+
+  <select id="queryUserToGroupByUserName" resultType="com.ng.member.entity.UserToGroup">
+      SELECT
+        u.id as userId,
+        u.user_name as userName,
+        g.group_id as groupId,
+        g.create_time as createTime,
+        g.group_role as groupRole
+      FROM
+        user_to_group g,user u
+      WHERE
+        g.user_id = u.id
+        AND
+        g.id = #{groupId}
+        <if test="null != userName and ''!= userName">
+        AND
+        u.user_name LIKE CONCAT('%',#{userName},'%')
+        </if>
+  </select>
+  
+  <select id="queryUserIdByGroupList" resultType="java.lang.Long">
+      SELECT
+        user_id
+      FROM
+        user_to_group
+      WHERE
+        group_id IN
+        <foreach item="item" index="index" collection="groupId" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+        AND
+        delete_flag = 'N'
+  </select>
+</mapper>

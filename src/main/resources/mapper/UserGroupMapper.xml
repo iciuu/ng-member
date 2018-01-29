@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ng.member.mapper.UserGroupMapper">
+  <resultMap id="BaseResultMap" type="com.ng.member.entity.UserGroup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="admin_user_id" jdbcType="BIGINT" property="adminUserId" />
+    <result column="group_desc" jdbcType="VARCHAR" property="groupDesc" />
+    <result column="group_code" jdbcType="VARCHAR" property="groupCode" />
+    <result column="delete_flag" jdbcType="CHAR" property="deleteFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <update id="delUserGroup">
+    UPDATE user_group SET delete_flag = 'Y',update_time = NOW() WHERE id = #{id} AND admin_user_id = #{adminUserId}
+  </update>
+</mapper>

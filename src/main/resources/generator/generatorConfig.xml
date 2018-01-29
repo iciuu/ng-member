@@ -1,0 +1,42 @@
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generator/jdbc.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="com.ng.member.util.MyMapper"/>
+        </plugin>
+
+        <plugin type="com.github.dongfg.plugin.LombokPlugin"/>
+        <plugin type="com.github.dongfg.plugin.CommentPlugin">
+            <property name="author" value="mybatis generator"/>
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.ng.member.entity" targetProject="src/main/java"/>
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <javaClientGenerator targetPackage="com.ng.member.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <table tableName="user_to_group">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+            <columnOverride column="id" javaType="java.lang.Long"/>
+        </table>
+
+    </context>
+
+</generatorConfiguration>
